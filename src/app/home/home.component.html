@@ -1,7 +1,7 @@
 <div class="container-home">
     <mat-list>
         <h3 mat-subheader>Users</h3>
-        <mat-list-item *ngFor="let user of $usersList | async">
+        <mat-list-item class="home-item" *ngFor="let user of $usersList | async">
           <!-- <mat-icon mat-list-icon>folder</mat-icon> -->
           <h4 mat-line>{{user.name}}</h4>
           <p mat-line> {{user.email}}</p>
