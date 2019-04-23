@@ -1,0 +1,13 @@
+.container-user {
+    max-width: 1140px;
+    margin: 20px auto;
+}
+
+.card-user {
+    max-width: 400px;
+    margin: 0 auto;
+    &-image {
+        background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
+        background-size: cover;
+    }
+}
