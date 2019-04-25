@@ -33,13 +33,12 @@ export class AppGuard implements CanActivate {
     }
 
     hasUsersInApi(id: string): Observable<boolean> {
+        this.store.dispatch(selectUser({id: parseInt(id, 10)}));
+
         return this.appService.getUsers().pipe(
             map((users: AppModel.IUser[]) => loadUsersSuccess({users})),
             tap(action => this.store.dispatch(action)),
-            map((users) => {
-                this.store.dispatch(selectUser({id: parseInt(id, 10)}));
-                return !!users;
-            }),
+            map((users) => !!users),
             catchError(() => {
                 this.router.navigate(['/']);
                 return of(false);
