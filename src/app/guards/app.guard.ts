@@ -1,22 +1,37 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate } from '@angular/router';
+import { ActivatedRouteSnapshot, CanActivate, Router } from '@angular/router';
 import { Observable, of } from 'rxjs';
 
 import * as fromApp from '../core/store/index';
-import { Store } from '@ngrx/store';
-import { AppFacade } from '../core/store/app.facade';
+import { Store, select } from '@ngrx/store';
+import { map, take, switchMap } from 'rxjs/operators';
 
 @Injectable({
     providedIn: 'root',
 })
 export class AppGuard implements CanActivate {
 
-    constructor(private store: Store<fromApp.AppState>, private appFacade: AppFacade) {}
+    constructor(private store: Store<fromApp.AppState>, private router: Router) {}
+
+    waitForUsersToLoad(): Observable<boolean> {
+        return this.store.pipe(
+            select(fromApp.getUsersLoaded),
+            map(isLoaded => isLoaded),
+            take(1)
+        );
+    }
+
 
     canActivate(route: ActivatedRouteSnapshot): Observable<boolean> {
-        // this.store.dispatch(loadUsers());
-        // this.store.dispatch(selectUser({id: 1}));
+        return this.waitForUsersToLoad().pipe(
+            switchMap((isLoaded) => {
+                if (!isLoaded) {
+                    this.router.navigate(['/']);
+                    return of(false);
+                }
 
-        return of(true);
+                return of(true);
+            })
+        );
     }
 }

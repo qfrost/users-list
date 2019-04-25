@@ -20,6 +20,8 @@ export const getUsers = createSelector(
     (state: fromApp.State) => state.users
 );
 
+export const getUsersLoaded = createSelector(getAppState, (state: fromApp.State) => state.is_loaded);
+
 export const getSelectedId = createSelector(getAppState, (state: fromApp.State) => state.selectedId);
 
 export const getUserById = createSelector(getUsers, getSelectedId, (users, id) => {
