@@ -1,4 +1,4 @@
-<ng-container  *ngIf="user">
+<ng-container  *ngIf="user$ | async as user">
   <div class="container-user">
 
     <mat-card class="card-user">

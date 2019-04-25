@@ -1,5 +1,6 @@
-import { LOAD_USERS, SELECT_USER, LoadUsers, SelectUser } from './app.action';
+// import { LOAD_USERS, SELECT_USER, LoadUsers, SelectUser } from './app.action';
 import { AppModel } from '../models/app.model';
+import { loadUsers, selectUser, AppActionUnion, loadUsersSuccess } from './app.action';
 
 export interface State {
     users: AppModel.IUser[];
@@ -13,22 +14,22 @@ const initialState: State = {
     selectedId: null
 };
 
-export function reducer(state: State = initialState, action: SelectUser | LoadUsers): State {
+export function reducer(state: State = initialState, action: AppActionUnion): State {
 
     switch (action.type) {
 
-        case SELECT_USER: {
+        case loadUsersSuccess.type: {
             return {
                 ...state,
-                selectedId: action.payload
+                users: action.users,
+                is_loaded: true
             };
         }
 
-        case LOAD_USERS: {
+        case selectUser.type: {
             return {
                 ...state,
-                users: action.payload,
-                is_loaded: true
+                selectedId: action.id
             };
         }
 

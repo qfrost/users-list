@@ -1,18 +1,19 @@
-import { Action } from '@ngrx/store';
+import { createAction, props, union } from '@ngrx/store';
 import { AppModel } from '../models/app.model';
 
-export const LOAD_USERS = '[App] LOAD USERS';
-export const SELECT_USER = '[App] SELECT USER';
+export const loadUsers = createAction(
+    '[App] Load Users'
+);
 
-export class SelectUser implements Action {
-    public readonly type = SELECT_USER;
-    constructor(public payload: number) {}
-}
+export const loadUsersSuccess = createAction(
+    '[App] Load Users Succes',
+    props<{ users: AppModel.IUser[] }>()
+);
 
-export class LoadUsers implements Action {
-    public readonly type = LOAD_USERS;
-    constructor(public payload: AppModel.IUser[]) {}
-}
+export const selectUser = createAction(
+    '[App] Select User',
+    props<{ id: number }>()
+);
 
-export type AppAction = SelectUser | LoadUsers;
-
+const all = union({ loadUsers, loadUsersSuccess, selectUser });
+export type AppActionUnion = typeof all;
